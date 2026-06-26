@@ -16,21 +16,34 @@ function App() {
     setResult(null);
   };
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!image) {
-      alert("Please upload a tea leaf image first.");
+      alert("Please upload an image first.");
       return;
     }
 
-    // Demo result for frontend testing
-    setResult({
-      disease: "Brown Blight",
-      confidence: "95.16%",
-      severity: "23.50%",
-      grade: "Moderate",
-      advice:
-        "Improve field sanitation, remove affected leaves if needed, avoid excess moisture, and monitor the plant regularly. Follow local agricultural guidance before applying treatment.",
-    });
+    const formData = new FormData();
+    formData.append("file", image);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      setResult({
+        disease: data.disease,
+        confidence: data.confidence,
+        severity: data.severity_percentage,
+        grade: data.severity_grade,
+        advice: data.advice,
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong. Please check backend server.");
+    }
   };
 
   return (
