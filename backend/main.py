@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from backend.utils.predictor import predict_tea_disease
 
 app = FastAPI()
 
@@ -31,11 +32,5 @@ def health_check():
 
 @app.post("/predict")
 async def predict_disease(file: UploadFile = File(...)):
-    return {
-        "filename": file.filename,
-        "disease": "Brown Blight",
-        "confidence": "95.16%",
-        "severity_percentage": "23.50%",
-        "severity_grade": "Moderate",
-        "advice": "Remove infected leaves, improve air circulation, avoid overhead watering, and monitor disease spread regularly."
-    }
+    result = predict_tea_disease(file.filename)
+    return result
