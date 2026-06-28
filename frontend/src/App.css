@@ -226,6 +226,16 @@ footer {
   text-align: center;
 }
 
+.warning-text {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff7e6;
+  color: #9a6500;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
 @media (max-width: 900px) {
   .hero,
   .analysis-grid,

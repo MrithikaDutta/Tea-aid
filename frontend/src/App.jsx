@@ -34,12 +34,14 @@ function App() {
       const data = await response.json();
 
       setResult({
-        disease: data.disease,
-        confidence: data.confidence,
-        severity: data.severity_percentage,
-        grade: data.severity_grade,
-        advice: data.advice,
-      });
+  disease: data.disease,
+  confidence: data.confidence,
+  severity: data.severity_percentage,
+  grade: data.severity_grade,
+  warning: data.warning,
+  advice: data.advice,
+});
+
     } catch (error) {
       console.error("Error:", error);
       alert("Something went wrong. Please check backend server.");
@@ -127,6 +129,7 @@ function App() {
                 </div>
 
                 <div className="grade-box">{result.grade}</div>
+                <p className="warning-text">{result.warning}</p>
               </>
             ) : (
               <p className="empty">Prediction result will appear here.</p>

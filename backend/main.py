@@ -29,8 +29,12 @@ def health_check():
         "status": "ok"
     }
 
-
 @app.post("/predict")
 async def predict_disease(file: UploadFile = File(...)):
-    result = predict_tea_disease(file.filename)
+    upload_path = f"backend/uploads/{file.filename}"
+
+    with open(upload_path, "wb") as buffer:
+        buffer.write(await file.read())
+
+    result = predict_tea_disease(upload_path)
     return result
