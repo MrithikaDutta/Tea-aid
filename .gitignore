@@ -13,3 +13,8 @@ frontend/dist/
 # Upload folder
 backend/uploads/*
 !backend/uploads/.gitkeep
+
+
+# Trained model files
+backend/models/*.pt
+backend/models/*.pth
