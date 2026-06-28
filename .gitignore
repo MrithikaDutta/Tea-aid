@@ -18,3 +18,8 @@ backend/uploads/*
 # Trained model files
 backend/models/*.pt
 backend/models/*.pth
+
+backend/static/masks/*.png
+backend/static/masks/*.jpg
+backend/static/masks/*.jpeg
+!backend/static/masks/.gitkeep
