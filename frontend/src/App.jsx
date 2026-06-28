@@ -38,6 +38,7 @@ function App() {
   confidence: data.confidence,
   severity: data.severity_percentage,
   grade: data.severity_grade,
+  maskUrl: `http://127.0.0.1:8000${data.mask_url}`,
   warning: data.warning,
   advice: data.advice,
 });
@@ -142,7 +143,10 @@ function App() {
             <h3>Segmentation Output</h3>
             <div className="segmentation-box">
               {preview ? (
-                <img src={preview} alt="Segmentation placeholder" />
+                <img 
+                src={result?.maskUrl || preview}
+                alt="Segmentation output"
+                className="preview-image" />
               ) : (
                 <p>Segmentation overlay will appear here.</p>
               )}

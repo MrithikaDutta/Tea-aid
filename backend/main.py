@@ -1,8 +1,11 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from backend.utils.predictor import predict_tea_disease
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
