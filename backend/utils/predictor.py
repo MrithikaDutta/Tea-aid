@@ -1,6 +1,7 @@
 from backend.utils.classification import classify_image
 from backend.utils.segmentation import estimate_severity
 from backend.utils.advisor import get_treatment_advice
+from backend.utils.rag_engine import generate_rag_advice
 
 def format_class_name(class_name: str):
     return class_name.replace("_", " ").title()
@@ -40,7 +41,7 @@ def predict_tea_disease(image_path: str):
         "severity_grade": severity_grade,
         "warning": warning,
         "mask_url": mask_url,
-        "advice": get_treatment_advice(disease, severity_grade),
+        "advice": generate_rag_advice(disease, severity_grade, severity_percentage, confidence),
     }
 
     return result
