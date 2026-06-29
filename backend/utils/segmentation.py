@@ -50,11 +50,14 @@ def save_mask_image(predicted_mask, original_filename):
 
     mask_rgb = np.zeros((predicted_mask.shape[0], predicted_mask.shape[1], 3), dtype=np.uint8)
 
-# Disease pixels = golden yellow
-    mask_rgb[np.isin(predicted_mask, [1, 2, 3, 4])] = [255, 193, 7]
+# Background pixels = soft charcoal gray
+    mask_rgb[predicted_mask == 0] = [48, 52, 50]
 
-# Leaf pixels = deep teal
-    mask_rgb[predicted_mask == 5] = [0, 96, 100]
+# Disease pixels = bright amber/orange highlight
+    mask_rgb[np.isin(predicted_mask, [1, 2, 3, 4])] = [255, 170, 30]
+
+# Leaf pixels = dark muted green
+    mask_rgb[predicted_mask == 5] = [42, 95, 68]
 
     mask_image = Image.fromarray(mask_rgb)
 
@@ -65,7 +68,6 @@ def save_mask_image(predicted_mask, original_filename):
     mask_image.save(mask_path)
 
     return f"/static/masks/{mask_filename}"
-
 
 def estimate_severity(image_path: str):
     image = Image.open(image_path).convert("RGB")

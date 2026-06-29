@@ -154,7 +154,7 @@ function App() {
           </div>
 
           <div className="card">
-            <h3>RAG-Based Advisory</h3>
+            <h3>Severity-Based Advisory</h3>
             <p>{result ? result.advice : "Treatment advice will appear here."}</p>
           </div>
         </div>
