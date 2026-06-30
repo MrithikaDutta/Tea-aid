@@ -32,9 +32,21 @@ def classify_image(image_path: str):
     with torch.no_grad():
         outputs = model(image_tensor)
         probabilities = torch.softmax(outputs, dim=1)
-        confidence, predicted_index = torch.max(probabilities, 1)
 
-    predicted_class = CLASS_NAMES[predicted_index.item()]
-    confidence_score = confidence.item() * 100
+        top_probs, top_indices = torch.topk(probabilities, k=3, dim=1)
 
-    return predicted_class, confidence_score
+    top_predictions = []
+
+    for prob, index in zip(top_probs[0], top_indices[0]):
+        class_name = CLASS_NAMES[index.item()]
+        confidence_score = prob.item() * 100
+
+        top_predictions.append({
+            "class_name": class_name,
+            "confidence": confidence_score,
+        })
+
+    predicted_class = top_predictions[0]["class_name"]
+    confidence_score = top_predictions[0]["confidence"]
+
+    return predicted_class, confidence_score, top_predictions

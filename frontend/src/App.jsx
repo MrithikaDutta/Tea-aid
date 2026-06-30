@@ -40,6 +40,7 @@ function App() {
   grade: data.severity_grade,
   maskUrl: `http://127.0.0.1:8000${data.mask_url}`,
   warning: data.warning,
+  topPredictions: data.top_predictions,
   advice: data.advice,
 });
 
@@ -131,6 +132,24 @@ function App() {
 
                 <div className="grade-box">{result.grade}</div>
                 <p className="warning-text">{result.warning}</p>
+  {parseFloat(result.confidence) >= 70 && parseFloat(result.confidence) <= 80 && (
+  <div className="top-predictions">
+    <h4>Top-2 Predictions</h4>
+
+    {result.topPredictions
+      ?.filter((item) => {
+        if (result.disease === "Healthy") return true;
+        return item.class_name !== "healthy";
+      })
+      .slice(0, 2)
+      .map((item, index) => (
+        <div className="top-row" key={index}>
+          <span>{index + 1}. {item.class_name.replaceAll("_", " ")}</span>
+          <strong>{item.confidence.toFixed(2)}%</strong>
+        </div>
+      ))}
+  </div>
+)}
               </>
             ) : (
               <p className="empty">Prediction result will appear here.</p>
@@ -151,14 +170,31 @@ function App() {
                 <p>Segmentation overlay will appear here.</p>
               )}
             </div>
+            {result && (
+  <div className="legend-box">
+    <span><b className="legend-color leaf"></b> Leaf Area</span>
+    <span><b className="legend-color disease"></b> Infected Area</span>
+    <span><b className="legend-color background"></b> Background</span>
+  </div>
+)}
           </div>
 
-          <div className="card">
-            <h3>RAG-Based Advisory</h3>
-            <p>{result ? result.advice : "Treatment advice will appear here."}</p>
-          </div>
-        </div>
-      </section>
+    <div className="card">
+     <h3>RAG-Based Advisory</h3>
+      {result ? (
+       <div className="advice-box">
+         {result.advice.split("\n").map((line, index) => (
+           <p key={index}>{line}</p>
+      ))}
+    </div>
+
+  ) : (
+    <p>Treatment advice will appear here.</p>
+  )}
+</div>
+    </div>
+      
+    </section>
 
       <section className="about" id="about">
         <h2>About This System</h2>

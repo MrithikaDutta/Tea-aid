@@ -23,17 +23,25 @@ def get_demo_advice(disease: str, severity_grade: str):
 
 
 def predict_tea_disease(image_path: str):
-    disease, confidence = classify_image(image_path)
+    disease, confidence, top_predictions = classify_image(image_path)
     severity_percentage, severity_grade, mask_url = estimate_severity(image_path)
     if disease == "healthy":
         severity_percentage = 0.0
         severity_grade = "Healthy"
 
     if confidence < 70:
-        warning = "Low confidence prediction. Please verify the result manually or use a clearer leaf image."
-    else:
-        warning = "Prediction confidence is acceptable."
+      warning = (
+       "Low confidence prediction. Please verify the result manually or use a clearer leaf image."
+    )
 
+    elif 70 <= confidence <= 80:
+      warning = (
+        "Prediction confidence is moderate. Symptoms may visually overlap, so please verify using field symptoms, pest signs, or expert review."
+    )
+
+    else:
+     warning = "Prediction confidence is acceptable."    
+    
     result = {
         "disease": format_class_name(disease),
         "confidence": f"{confidence:.2f}%",
@@ -41,6 +49,7 @@ def predict_tea_disease(image_path: str):
         "severity_grade": severity_grade,
         "warning": warning,
         "mask_url": mask_url,
+        "top_predictions": top_predictions,
         "advice": generate_rag_advice(disease, severity_grade, severity_percentage, confidence),
     }
 

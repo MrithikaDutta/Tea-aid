@@ -50,15 +50,14 @@ def save_mask_image(predicted_mask, original_filename):
 
     mask_rgb = np.zeros((predicted_mask.shape[0], predicted_mask.shape[1], 3), dtype=np.uint8)
 
-# Background pixels = soft charcoal gray
-    mask_rgb[predicted_mask == 0] = [48, 52, 50]
+# Background pixels = medium soft gray
+    mask_rgb[predicted_mask == 0] = [175, 180, 176]
 
-# Disease pixels = bright amber/orange highlight
-    mask_rgb[np.isin(predicted_mask, [1, 2, 3, 4])] = [255, 170, 30]
+# Disease pixels = deep burgundy
+    mask_rgb[np.isin(predicted_mask, [1, 2, 3, 4])] = [128, 35, 55]
 
-# Leaf pixels = dark muted green
-    mask_rgb[predicted_mask == 5] = [42, 95, 68]
-
+# Leaf pixels = muted forest green
+    mask_rgb[predicted_mask == 5] = [56, 103, 78]
     mask_image = Image.fromarray(mask_rgb)
 
     filename = os.path.basename(original_filename)
