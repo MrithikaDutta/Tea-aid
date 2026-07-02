@@ -1,10 +1,13 @@
 import torch
 from PIL import Image
+from backend.utils.model_downloader import download_models_if_missing
 from torchvision import models, transforms
 
 
 MODEL_PATH = "backend/models/best_efficientnet_b0.pt"
 DEVICE = torch.device("cpu")
+
+download_models_if_missing()
 
 checkpoint = torch.load(MODEL_PATH, map_location=DEVICE)
 CLASS_NAMES = checkpoint["class_names"]

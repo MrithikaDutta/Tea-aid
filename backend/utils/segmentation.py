@@ -3,11 +3,14 @@ import torch
 import numpy as np
 from PIL import Image
 from torchvision import transforms
+from backend.utils.model_downloader import download_models_if_missing
 from transformers import SegformerForSemanticSegmentation
 
 
 MODEL_PATH = "backend/models/best_by_severity_mae.pt"
 DEVICE = torch.device("cpu")
+
+download_models_if_missing()
 
 checkpoint = torch.load(MODEL_PATH, map_location=DEVICE)
 
